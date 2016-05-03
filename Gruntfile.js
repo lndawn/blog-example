@@ -1,0 +1,32 @@
+module.exports=function(grunt){
+	grunt.initConfig({
+		pkg:grunt.file.readJSON('package.json'),
+		cssmin:{
+			compress:{
+				banner:'/*myblog minified css file */'
+			},
+			files:{
+				'dest/myblog.css':['app/css/main','app/css/base']
+			}
+		},
+		concat:{
+			domop:{
+				src:'app/js/*.js',
+				dest:'dest/myblog.js'
+			}
+		},
+		uglify:{
+			options:{
+				banner:'/*!<%=pkg.name%><%=grunt.template.today("yyyy-mm-dd")%>*/\n'
+			},
+			build:{
+				src:'dest/myblog.js',
+				dest:'dest/myblog.min.js'
+			}
+		}
+	});
+	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-concat');
+	grunt.loadNpmTasks('grunt-contrib-cssmin');
+	grunt.registerTask('default',['concat','uglify','cssmin'])
+}
